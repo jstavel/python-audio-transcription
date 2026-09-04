@@ -106,11 +106,16 @@ if __name__ == "__main__":
     # Preved cestu v promenne path na absolutni cestu
     absolute_path = os.path.expanduser(path)
     
-    response = process_audio(absolute_path)
-
-    # vypis promennou response do souboru s priponou .txt
     # Nazev souboru je odvozen z *absolute_path* = vymeni se pripona
     output_path = os.path.splitext(absolute_path)[0] + ".org"
+    
+    # Kontrola, zda jiz vystupni soubor existuje
+    if os.path.exists(output_path):
+        print(f"Výstupní soubor {output_path} již existuje. Přeskakuji přepis.")
+        sys.exit(0)
+        
+    response = process_audio(absolute_path)
+
     with open(output_path, "w") as f:
         f.write(str(response))
         
