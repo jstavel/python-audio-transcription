@@ -21,25 +21,36 @@ client = genai.Client(
 
 # Kontextové volání modelu
 prompt_template = """
-Zpracuj připojený audio soubor. Tvým úkolem je vytvořit jeho doslovný
-přepis a krátké shrnutí přímo ve formátu pro Emacs Org-mode. Striktně
-dodržuj následující strukturu:
+Zpracuj připojený audio soubor. Tvým úkolem je vytvořit doslovný přepis a strukturovanou analýzu pro Emacs Org-mode. Striktně dodržuj následující strukturu:
 
-* Prepis {FILE_NAME}
+** Přepis {FILE_NAME}
 :PROPERTIES:
-:ID: [Zde vygeneruj jedinecne UUID]
+:ID: [Zde vygeneruj jedinečné UUID]
 :Path: {FILE_PATH}
 :Source: Plaud
 :Synopsis: [Zde napiš stručné shrnutí obsahu nahrávky jednou až dvěma větami – o čem nahrávka je, jaké je hlavní téma nebo klíčová myšlenka.]
+:Tone: [Urči emoční náboj: např. analytický, naléhavý, přátelský, unavený...]
 :END:
 
+** Shrnutí
+[Stručné shrnutí obsahu jednou až dvěma větami.]
+
+** Klíčové myšlenky
+- [Hlavní bod 1]
+- [Hlavní bod 2]
+
+** Akční položky
+- [ ] [Úkol 1, pokud nějaký vyplynul, jinak sekci vynech]
+
 #+begin_quote
-[Zde bude doslovný přepis nahrávky slovo od slova. Vynechej pouze řečnickou výplň jako 'eee', 'vlastně', 'jakoby', 'prostě'.]
+[Doslovný přepis nahrávky slovo od slova. Vynechej řečnické výplně jako 'eee', 'vlastně', 'jakoby', 'prostě'. Zachovej strukturu odstavců pro čitelnost.]
 #+end_quote
 
 Pravidla:
-1. Vlastnost :Synopsis: napiš věcně a stručně, aby byla zachována přehlednost v org-mode.
-2. Výstupem bude pouze čistý text v tomto formátu, bez jakýchkoliv tvých úvodních nebo závěrečných komentářů.
+1. Výstupem bude pouze čistý text v tomto formátu, bez úvodních či závěrečných komentářů.
+2. Pokud v nahrávce nezazní žádný konkrétní úkol, sekci "Akční položky" odstraň.
+3. Používej diakritiku a správnou českou interpunkci.
+4. Vlastnost :Synopsis: napiš věcně a stručně, aby byla zachována přehlednost v org-mode.
 """
 
 def process_audio(file_path):
